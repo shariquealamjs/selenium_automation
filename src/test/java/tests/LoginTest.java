@@ -4,12 +4,16 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import utils.ExtentTestManager;
 import utils.Log;
+
+import java.time.Duration;
 
 public class LoginTest {
 
@@ -24,26 +28,21 @@ public class LoginTest {
     }
 
     @Test
-    public void validateLogin() {
+    public void validateUrl() {
         ExtentTestManager.startTest("Validate Login", "Verify login functionality of the dummy site");
 
         Log.info("Navigating to the login page");
-        driver.get("https://example.com/login");
+        driver.get("https://baazigames.com/");
         Log.info("Locating and interacting with web elements");
-        WebElement username = driver.findElement(By.id("username"));
-        WebElement password = driver.findElement(By.id("password"));
-        WebElement loginButton = driver.findElement(By.id("loginButton"));
 
-        Log.info("Entering credentials");
-        username.sendKeys("testuser");
-        password.sendKeys("testpassword");
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement contactUs = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@id='navbarNav']/span[3]/a")));
+        contactUs.click();
 
-        Log.info("Clicking the login button");
-        loginButton.click();
-
-        Log.info("Validating successful login");
-        String expectedUrl = "https://example.com/home";
+        Log.info("Validating URL");
+        String expectedUrl = "https://baazigames.com/contact-us/index.html";
         Assert.assertEquals(driver.getCurrentUrl(), expectedUrl, "Login failed or URL mismatch");
+        driver.get("https://baazigames.com/");
 
         ExtentTestManager.endTest();
     }
